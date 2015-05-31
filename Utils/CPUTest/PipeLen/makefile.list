@@ -1,0 +1,5 @@
+SRCS=PipeLen.cpp
+
+PipeLen.o : PipeLen.cpp
+	$(CXX) $(CXXFLAGS) PipeLen.cpp
+

@@ -1,0 +1,8 @@
+SRCS=MemLat.cpp
+
+MemLat.o : MemLat.cpp
+	$(CXX) $(CXXFLAGS) MemLat.cpp
+
+Walk.o : Walk.c
+	$(CC) $(CFLAGS) Walk.c
+
