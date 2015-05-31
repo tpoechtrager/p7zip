@@ -227,6 +227,11 @@ enum ERecordType
   RECORD_TYPE_FILE_THREAD
 };
 
+enum EFileMode
+{
+  FILEMODE_SYMLINK = 0120000
+};
+
 struct CItem
 {
   UString Name;
@@ -275,6 +280,7 @@ struct CItem
 
   CItem(): UseAttr(false), UseInlineData(false) {}
   bool IsDir() const { return Type == RECORD_TYPE_FOLDER; }
+  bool IsSymLink() const { return (FileMode & FILEMODE_SYMLINK) == FILEMODE_SYMLINK; }
   const CFork &GetFork(bool isResource) const { return (CFork  & )*(isResource ? &ResourceFork: &DataFork ); }
 };
 
@@ -982,7 +988,9 @@ HRESULT CDatabase::LoadCatalog(const CFork &fork, const CObjectVector<CIdExtents
       item.GroupID = Get32(r + 0x24);
       item.AdminFlags = r[0x28];
       item.OwnerFlags = r[0x29];
+      */
       item.FileMode = Get16(r + 0x2A);
+      /*
       item.special.iNodeNum = Get16(r + 0x2C); // or .linkCount
       item.FileType = Get32(r + 0x30);
       item.FileCreator = Get32(r + 0x34);
@@ -1778,6 +1786,8 @@ STDMETHODIMP CHandler::Extract(const UInt32 *indices, UInt32 numItems,
             UInt64 processed = currentTotalSize + pos;
             RINOK(extractCallback->SetCompleted(&processed));
           }
+          if (item.IsSymLink())
+            RINOK(extractCallback->CreateSymLink());
         }
         if (extentIndex != fork.Extents.Size() || fork.Size != pos)
           res = NExtract::NOperationResult::kDataError;

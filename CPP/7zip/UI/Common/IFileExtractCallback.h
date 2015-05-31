@@ -28,6 +28,7 @@ public:
       const wchar_t *newName, const FILETIME *newTime, const UInt64 *newSize,
       Int32 *answer) PURE;
   STDMETHOD(PrepareOperation)(const wchar_t *name, bool isFolder, Int32 askExtractMode, const UInt64 *position) PURE;
+  STDMETHOD(CreateSymLink)() PURE;
   STDMETHOD(MessageError)(const wchar_t *message) PURE;
   STDMETHOD(SetOperationResult)(Int32 operationResult, bool encrypted) PURE;
 };
@@ -61,6 +62,7 @@ DECL_INTERFACE_SUB(IGetProp, IUnknown, 0x01, 0x20)
   STDMETHOD(UseExtractToStream)(Int32 *res) x; \
   STDMETHOD(GetStream7)(const wchar_t *name, Int32 isDir, ISequentialOutStream **outStream, Int32 askExtractMode, IGetProp *getProp) x; \
   STDMETHOD(PrepareOperation7)(Int32 askExtractMode) x; \
+  STDMETHOD(createSymLink7)() x; \
   STDMETHOD(SetOperationResult7)(Int32 resultEOperationResult, bool encrypted) x; \
 
 DECL_INTERFACE_SUB(IFolderExtractToStreamCallback, IUnknown, 0x01, 0x30)

@@ -1,6 +1,8 @@
 // ArchiveExtractCallback.cpp
 
 #include "StdAfx.h"
+#include <stdio.h>
+#include <unistd.h>
 
 #undef sprintf
 #undef printf
@@ -1006,6 +1008,42 @@ STDMETHODIMP CArchiveExtractCallback::PrepareOperation(Int32 askExtractMode)
   };
   return _extractCallback2->PrepareOperation(_filePath, _fi.IsDir,
       askExtractMode, _isSplit ? &_position: 0);
+  COM_TRY_END
+}
+
+STDMETHODIMP CArchiveExtractCallback::CreateSymLink()
+{
+  COM_TRY_BEGIN
+
+  char file[4096];
+
+  if (wcstombs(file, _filePath.Ptr(), sizeof(file)) == -1u)
+    return E_FAIL;
+
+  FILE *f = fopen(file, "rb");
+
+  if (!f)
+    return E_FAIL;
+
+  fseek(f, 0, SEEK_END);
+  size_t size = ftell(f);
+  fseek(f, 0, SEEK_SET);
+
+  char *dst = new char[size + 1];
+  size_t bytesRead = fread(dst, 1, size, f);
+  fclose(f);
+
+  dst[bytesRead] = '\0';
+
+  if (bytesRead != size || remove(file) || symlink(dst, file))
+  {
+    delete[] dst;
+    return E_FAIL;
+  }
+
+  delete[] dst;
+  return S_OK;
+
   COM_TRY_END
 }
 

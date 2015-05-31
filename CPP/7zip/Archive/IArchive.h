@@ -120,6 +120,7 @@ IArchiveExtractCallback::GetStream
   INTERFACE_IProgress(x) \
   STDMETHOD(GetStream)(UInt32 index, ISequentialOutStream **outStream, Int32 askExtractMode) x; \
   STDMETHOD(PrepareOperation)(Int32 askExtractMode) x; \
+  STDMETHOD(CreateSymLink)() x; \
   STDMETHOD(SetOperationResult)(Int32 resultEOperationResult) x; \
 
 ARCHIVE_INTERFACE_SUB(IArchiveExtractCallback, IProgress, 0x20)

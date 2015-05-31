@@ -1273,6 +1273,12 @@ STDMETHODIMP CExtractCallback_To_OpenCallback::PrepareOperation(Int32 /* askExtr
   return S_OK;
 }
 
+STDMETHODIMP CExtractCallback_To_OpenCallback::CreateSymLink()
+{
+  return S_OK;
+}
+
+
 STDMETHODIMP CExtractCallback_To_OpenCallback::SetOperationResult(Int32 /* operationResult */)
 {
   return S_OK;

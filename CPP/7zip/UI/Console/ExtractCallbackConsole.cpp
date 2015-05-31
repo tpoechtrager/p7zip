@@ -120,6 +120,11 @@ STDMETHODIMP CExtractCallbackConsole::PrepareOperation(const wchar_t *name, bool
   return S_OK;
 }
 
+STDMETHODIMP CExtractCallbackConsole::CreateSymLink()
+{
+  return S_OK;
+}
+
 STDMETHODIMP CExtractCallbackConsole::MessageError(const wchar_t *message)
 {
   (*OutStream) << message << endl;
