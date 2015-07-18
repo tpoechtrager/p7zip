@@ -178,7 +178,7 @@ AString UnicodeStringToMultiByte(const UString &src, UINT /* codePage */ )
     }
   }
 #else
-  UString &srcString = src;
+  const UString &srcString = src;
 #endif
 
   if ((global_use_utf16_conversion) && (!srcString.IsEmpty()))
